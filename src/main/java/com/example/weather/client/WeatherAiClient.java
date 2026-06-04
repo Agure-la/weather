@@ -2,6 +2,7 @@ package com.example.weather.client;
 
 import com.example.weather.dto.request.WeatherRequest;
 import com.example.weather.dto.response.Current;
+import com.example.weather.dto.response.Hourly;
 import com.example.weather.dto.response.WeatherResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -86,6 +87,38 @@ public WeatherResponse getWeather(Float lat, Float lon,WeatherRequest request) {
                         .build())
                 .retrieve()
                 .bodyToMono(Current.class)
+                .block();
+    }
+
+    public Hourly getHourlyWeather(double lat, double lon, int days, boolean ai, String units) {
+        return weatherWebClient
+                .get()
+                .uri(uri -> uri
+                        .path("/v1/hourly")
+                        .queryParam("lat", lat)
+                        .queryParam("lon", lon)
+                        .queryParam("days", days)
+                        .queryParam("ai", ai)
+                        .queryParam("units", units)
+                        .build())
+                .retrieve()
+                .bodyToMono(Hourly.class)
+                .block();
+    }
+
+    public WeatherResponse getDailyWeather(double lat, double lon, int days, boolean ai, String units) {
+        return weatherWebClient
+                .get()
+                .uri(uri -> uri
+                        .path("/v1/daily")
+                        .queryParam("lat", lat)
+                        .queryParam("lon", lon)
+                        .queryParam("days", days)
+                        .queryParam("ai", ai)
+                        .queryParam("units", units)
+                        .build())
+                .retrieve()
+                .bodyToMono(WeatherResponse.class)
                 .block();
     }
 }

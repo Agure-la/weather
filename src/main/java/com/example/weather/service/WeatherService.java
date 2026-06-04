@@ -5,6 +5,7 @@ import com.example.weather.dto.request.CurrentWeatherRequest;
 import com.example.weather.dto.request.ForeCastRequest;
 import com.example.weather.dto.request.WeatherRequest;
 import com.example.weather.dto.response.Current;
+import com.example.weather.dto.response.Hourly;
 import com.example.weather.dto.response.WeatherResponse;
 import com.example.weather.entity.Location;
 import com.example.weather.repository.LocationRepository;
@@ -56,5 +57,26 @@ public class WeatherService {
         String units = request.getUnits() != null ? request.getUnits() : "metric";
         String lang = request.getLang() != null ? request.getLang() : "en";
         return weatherAiClient.getCurrentWeather(location.getLatitude(), location.getLongitude(), ai, units, lang);
+    }
+
+    private Location getLocation(String city) {
+        return locationRepository.findByCityIgnoreCase(city).orElseThrow(() -> new RuntimeException("City not found: " + city));
+    }
+
+    public Hourly getHourlyWeather(WeatherRequest request) {
+
+        Location location = getLocation(request.getCityName());
+        int days = request.getDays() != null ? request.getDays() : 7;
+        boolean ai = request.getAi() != null ? request.getAi() : true;
+        String units = request.getUnits() != null ? request.getUnits() : "metric";
+        return weatherAiClient.getHourlyWeather(location.getLatitude(), location.getLongitude(), days, ai, units);
+    }
+
+    public WeatherResponse getDailyWeather(WeatherRequest request) {
+        Location location = getLocation(request.getCityName());
+        int days = request.getDays() != null ? request.getDays() : 7;
+        boolean ai = request.getAi() != null ? request.getAi() : true;
+        String units = request.getUnits() != null ? request.getUnits() : "metric";
+        return weatherAiClient.getDailyWeather(location.getLatitude(), location.getLongitude(), days, ai, units);
     }
 }
