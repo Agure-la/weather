@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class WeatherService {
@@ -17,19 +19,20 @@ public class WeatherService {
 
     //@Cacheable(value = "weather", key = "#lat + ':' + #lon + ':' + #days + ':' + #ai + ':' + #units + ':' + #lang")
     public WeatherResponse getWeather(WeatherRequest request) {
+        Location location = locationRepository.findByCityIgnoreCase(request.getCityName()).orElseThrow(() -> new RuntimeException("Location not found for city: " + request.getCityName()));
+
         Integer days = request.getDays() != null ? request.getDays() : 7;
         Boolean ai = request.getAi() != null ? request.getAi() : true;
         String units = request.getUnits() != null ? request.getUnits() : "metric";
         String lang = request.getLang() != null ? request.getLang() : "en";
 
         WeatherRequest normalized = new WeatherRequest();
-        normalized.setLat(request.getLat());
-        normalized.setLon(request.getLon());
+        normalized.setCityName(request.getCityName());
         normalized.setDays(days);
         normalized.setAi(ai);
         normalized.setUnits(units);
         normalized.setLang(lang);
 
-        return weatherAiClient.getWeather(normalized);
+        return weatherAiClient.getWeather(location.getLatitude().floatValue(), location.getLongitude().floatValue(), normalized);
     }
 }

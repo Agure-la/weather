@@ -21,14 +21,14 @@ public class WeatherAiClient {
 
 //    @Retry(name = "weather-ai")
 //    @CircuitBreaker(name = "weather-ai")
-public WeatherResponse getWeather(WeatherRequest request) {
+public WeatherResponse getWeather(Float lat, Float lon,WeatherRequest request) {
 
     String response = weatherWebClient
             .get()
             .uri(uriBuilder -> uriBuilder
                     .path("/v1/weather")
-                    .queryParam("lat", request.getLat())
-                    .queryParam("lon", request.getLon())
+                    .queryParam("lat", lat)
+                    .queryParam("lon", lon)
                     .queryParamIfPresent("days", Optional.ofNullable(request.getDays()))
                     .queryParamIfPresent("ai", Optional.ofNullable(request.getAi()))
                     .queryParamIfPresent("units", Optional.ofNullable(request.getUnits()))
