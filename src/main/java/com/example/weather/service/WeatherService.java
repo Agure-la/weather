@@ -1,8 +1,10 @@
 package com.example.weather.service;
 
 import com.example.weather.client.WeatherAiClient;
+import com.example.weather.dto.request.CurrentWeatherRequest;
 import com.example.weather.dto.request.ForeCastRequest;
 import com.example.weather.dto.request.WeatherRequest;
+import com.example.weather.dto.response.Current;
 import com.example.weather.dto.response.WeatherResponse;
 import com.example.weather.entity.Location;
 import com.example.weather.repository.LocationRepository;
@@ -44,5 +46,15 @@ public class WeatherService {
         int days = request.getDays() != null ? request.getDays() : 7;
         boolean ai = request.getAi() != null ? request.getAi() : true;
         return weatherAiClient.getForecast(location.getLatitude(), location.getLongitude(), days, ai);
+    }
+
+    public Current getCurrentWeather(CurrentWeatherRequest request) {
+        Location location = locationRepository.findByCityIgnoreCase(request.getCityName())
+                .orElseThrow(() -> new RuntimeException("City not found: " + request.getCityName()));
+
+        boolean ai = request.getAi() != null ? request.getAi() : true;
+        String units = request.getUnits() != null ? request.getUnits() : "metric";
+        String lang = request.getLang() != null ? request.getLang() : "en";
+        return weatherAiClient.getCurrentWeather(location.getLatitude(), location.getLongitude(), ai, units, lang);
     }
 }

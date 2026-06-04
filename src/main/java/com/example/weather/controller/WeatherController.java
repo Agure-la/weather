@@ -1,7 +1,9 @@
 package com.example.weather.controller;
 
+import com.example.weather.dto.request.CurrentWeatherRequest;
 import com.example.weather.dto.request.ForeCastRequest;
 import com.example.weather.dto.request.WeatherRequest;
+import com.example.weather.dto.response.Current;
 import com.example.weather.dto.response.WeatherResponse;
 import com.example.weather.service.WeatherService;
 import jakarta.validation.Valid;
@@ -25,5 +27,10 @@ public class WeatherController {
     @PostMapping("/forecast")
     public ResponseEntity<WeatherResponse> getForecast(@Valid @RequestBody ForeCastRequest request) {
         return ResponseEntity.ok(weatherService.getForecast(request));
+    }
+
+    @PostMapping("/current")
+    public ResponseEntity<Current> getCurrent(@RequestBody CurrentWeatherRequest request) {
+        return ResponseEntity.ok(weatherService.getCurrentWeather(request));
     }
 }

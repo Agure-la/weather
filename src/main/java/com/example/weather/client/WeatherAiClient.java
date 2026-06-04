@@ -1,6 +1,7 @@
 package com.example.weather.client;
 
 import com.example.weather.dto.request.WeatherRequest;
+import com.example.weather.dto.response.Current;
 import com.example.weather.dto.response.WeatherResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,6 +69,23 @@ public WeatherResponse getWeather(Float lat, Float lon,WeatherRequest request) {
                         .build())
                 .retrieve()
                 .bodyToMono(WeatherResponse.class)
+                .block();
+    }
+
+    public Current getCurrentWeather(double lat, double lon, boolean ai, String units, String lang) {
+
+        return weatherWebClient
+                .get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/v1/current")
+                        .queryParam("lat", lat)
+                        .queryParam("lon", lon)
+                        .queryParam("ai", ai)
+                        .queryParam("units", units)
+                        .queryParam("lang", lang)
+                        .build())
+                .retrieve()
+                .bodyToMono(Current.class)
                 .block();
     }
 }
