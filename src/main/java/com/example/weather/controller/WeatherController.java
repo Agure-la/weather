@@ -19,18 +19,17 @@ public class WeatherController {
     private final WeatherService weatherService;
 
     @GetMapping
-    public ResponseEntity<WeatherResponse> getWeather(WeatherRequest request) {
+    public ResponseEntity<WeatherResponse> getWeather(@RequestBody WeatherRequest request) {
         WeatherResponse response = weatherService.getWeather(request);
-        System.out.println("response " + response);
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/forecast")
+    @GetMapping("/forecast")
     public ResponseEntity<WeatherResponse> getForecast(@Valid @RequestBody ForeCastRequest request) {
         return ResponseEntity.ok(weatherService.getForecast(request));
     }
 
-    @PostMapping("/current")
+    @GetMapping("/current")
     public ResponseEntity<Current> getCurrent(@RequestBody CurrentWeatherRequest request) {
         return ResponseEntity.ok(weatherService.getCurrentWeather(request));
     }
