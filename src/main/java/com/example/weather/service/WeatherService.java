@@ -1,6 +1,7 @@
 package com.example.weather.service;
 
 import com.example.weather.client.WeatherAiClient;
+import com.example.weather.dto.request.ForeCastRequest;
 import com.example.weather.dto.request.WeatherRequest;
 import com.example.weather.dto.response.WeatherResponse;
 import com.example.weather.entity.Location;
@@ -34,5 +35,14 @@ public class WeatherService {
         normalized.setLang(lang);
 
         return weatherAiClient.getWeather(location.getLatitude().floatValue(), location.getLongitude().floatValue(), normalized);
+    }
+
+    public WeatherResponse getForecast(ForeCastRequest request) {
+
+        Location location = locationRepository.findByCityIgnoreCase(request.getCity())
+                .orElseThrow(() -> new RuntimeException("City not found: " + request.getCity()));
+        int days = request.getDays() != null ? request.getDays() : 7;
+        boolean ai = request.getAi() != null ? request.getAi() : true;
+        return weatherAiClient.getForecast(location.getLatitude(), location.getLongitude(), days, ai);
     }
 }

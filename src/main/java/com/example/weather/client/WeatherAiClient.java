@@ -54,4 +54,20 @@ public WeatherResponse getWeather(Float lat, Float lon,WeatherRequest request) {
 
     return responsed;
 }
+
+    public WeatherResponse getForecast(double lat, double lon, int days, boolean ai) {
+
+        return weatherWebClient
+                .get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/v1/forecast")
+                        .queryParam("lat", lat)
+                        .queryParam("lon", lon)
+                        .queryParam("days", days)
+                        .queryParam("ai", ai)
+                        .build())
+                .retrieve()
+                .bodyToMono(WeatherResponse.class)
+                .block();
+    }
 }
