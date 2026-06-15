@@ -28,4 +28,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleRuntime(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("success", false, "message", ex.getMessage()));
     }
+
+    @ExceptionHandler(ResourceAlreadyExistException.class)
+    public ResponseEntity<?> handleConflict(ResourceAlreadyExistException ex){
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiError(ex.getMessage()));
+    }
 }

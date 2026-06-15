@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class WeatherRequest {
     @NotBlank(message = "cityName is required")
-   private String cityName;
+   private String city;
     private Integer days;
     private Boolean ai;
     private String units;

@@ -18,29 +18,29 @@ import org.springframework.web.bind.annotation.*;
 public class WeatherController {
     private final WeatherService weatherService;
 
-    @GetMapping
-    public ResponseEntity<WeatherResponse> getWeather(@RequestBody WeatherRequest request) {
+    @PostMapping
+    public ResponseEntity<WeatherResponse> getWeather(@Valid @RequestBody WeatherRequest request) {
         WeatherResponse response = weatherService.getWeather(request);
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/forecast")
+    @PostMapping("/forecast")
     public ResponseEntity<WeatherResponse> getForecast(@Valid @RequestBody ForeCastRequest request) {
         return ResponseEntity.ok(weatherService.getForecast(request));
     }
 
-    @GetMapping("/current")
-    public ResponseEntity<Current> getCurrent(@RequestBody CurrentWeatherRequest request) {
+    @PostMapping("/current")
+    public ResponseEntity<Current> getCurrent(@Valid @RequestBody CurrentWeatherRequest request) {
         return ResponseEntity.ok(weatherService.getCurrentWeather(request));
     }
 
-    @GetMapping("/hourly")
-    public ResponseEntity<Hourly> hourly(@RequestBody WeatherRequest request) {
+    @PostMapping("/hourly")
+    public ResponseEntity<Hourly> hourly(@Valid @RequestBody WeatherRequest request) {
         return ResponseEntity.ok(weatherService.getHourlyWeather(request));
     }
 
-    @GetMapping("/daily")
-    public ResponseEntity<WeatherResponse> daily(@RequestBody WeatherRequest request) {
+    @PostMapping("/daily")
+    public ResponseEntity<WeatherResponse> daily(@Valid @RequestBody WeatherRequest request) {
         return ResponseEntity.ok(weatherService.getDailyWeather(request));
     }
 }

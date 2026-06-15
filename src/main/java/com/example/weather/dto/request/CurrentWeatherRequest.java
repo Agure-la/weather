@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class CurrentWeatherRequest {
     @NotBlank
-    private String cityName;
+    private String city;
     private Boolean ai;
     private String units;
     private String lang;

@@ -23,7 +23,7 @@ public class WeatherService {
 
     //@Cacheable(value = "weather", key = "#lat + ':' + #lon + ':' + #days + ':' + #ai + ':' + #units + ':' + #lang")
     public WeatherResponse getWeather(WeatherRequest request) {
-        Location location = locationRepository.findByCityIgnoreCase(request.getCityName()).orElseThrow(() -> new RuntimeException("Location not found for city: " + request.getCityName()));
+        Location location = locationRepository.findByCityIgnoreCase(request.getCity()).orElseThrow(() -> new RuntimeException("Location not found for city: " + request.getCity()));
 
         Integer days = request.getDays() != null ? request.getDays() : 7;
         Boolean ai = request.getAi() != null ? request.getAi() : true;
@@ -31,7 +31,7 @@ public class WeatherService {
         String lang = request.getLang() != null ? request.getLang() : "en";
 
         WeatherRequest normalized = new WeatherRequest();
-        normalized.setCityName(request.getCityName());
+        normalized.setCity(request.getCity());
         normalized.setDays(days);
         normalized.setAi(ai);
         normalized.setUnits(units);
@@ -50,8 +50,8 @@ public class WeatherService {
     }
 
     public Current getCurrentWeather(CurrentWeatherRequest request) {
-        Location location = locationRepository.findByCityIgnoreCase(request.getCityName())
-                .orElseThrow(() -> new RuntimeException("City not found: " + request.getCityName()));
+        Location location = locationRepository.findByCityIgnoreCase(request.getCity())
+                .orElseThrow(() -> new RuntimeException("City not found: " + request.getCity()));
 
         boolean ai = request.getAi() != null ? request.getAi() : true;
         String units = request.getUnits() != null ? request.getUnits() : "metric";
@@ -65,7 +65,7 @@ public class WeatherService {
 
     public Hourly getHourlyWeather(WeatherRequest request) {
 
-        Location location = getLocation(request.getCityName());
+        Location location = getLocation(request.getCity());
         int days = request.getDays() != null ? request.getDays() : 7;
         boolean ai = request.getAi() != null ? request.getAi() : true;
         String units = request.getUnits() != null ? request.getUnits() : "metric";
@@ -73,7 +73,7 @@ public class WeatherService {
     }
 
     public WeatherResponse getDailyWeather(WeatherRequest request) {
-        Location location = getLocation(request.getCityName());
+        Location location = getLocation(request.getCity());
         int days = request.getDays() != null ? request.getDays() : 7;
         boolean ai = request.getAi() != null ? request.getAi() : true;
         String units = request.getUnits() != null ? request.getUnits() : "metric";

@@ -3,6 +3,7 @@ package com.example.weather.service;
 import com.example.weather.dto.request.CreateLocationRequest;
 import com.example.weather.dto.response.LocationResponse;
 import com.example.weather.entity.Location;
+import com.example.weather.exception.ResourceAlreadyExistException;
 import com.example.weather.repository.LocationRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +32,9 @@ public class LocationService {
     }
 
     public LocationResponse  create(CreateLocationRequest request) {
-
+        Optional<Location> existingLocation = repository.findByCityIgnoreCase(request.city());
+        if (existingLocation.isPresent()) {
+            throw new ResourceAlreadyExistException("Location already exists for city: " + request.city());}
         Location location = Location.builder()
                 .city(request.city())
                 .latitude(request.lat())
