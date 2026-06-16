@@ -49,7 +49,7 @@ public class WeatherService {
         return weatherAiClient.getForecast(location.getLatitude(), location.getLongitude(), days, ai);
     }
 
-    public Current getCurrentWeather(CurrentWeatherRequest request) {
+    public WeatherResponse getCurrentWeather(CurrentWeatherRequest request) {
         Location location = locationRepository.findByCityIgnoreCase(request.getCity())
                 .orElseThrow(() -> new RuntimeException("City not found: " + request.getCity()));
 

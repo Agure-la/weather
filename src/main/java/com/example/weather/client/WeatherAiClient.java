@@ -59,7 +59,7 @@ public WeatherResponse getWeather(Float lat, Float lon,WeatherRequest request) {
 
     public WeatherResponse getForecast(double lat, double lon, int days, boolean ai) {
 
-        return weatherWebClient
+        WeatherResponse response = weatherWebClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/v1/forecast")
@@ -71,11 +71,15 @@ public WeatherResponse getWeather(Float lat, Float lon,WeatherRequest request) {
                 .retrieve()
                 .bodyToMono(WeatherResponse.class)
                 .block();
+
+        log.info("Forecast response: {}", response);
+
+        return response;
     }
 
-    public Current getCurrentWeather(double lat, double lon, boolean ai, String units, String lang) {
+    public WeatherResponse getCurrentWeather(double lat, double lon, boolean ai, String units, String lang) {
 
-        return weatherWebClient
+        WeatherResponse response = weatherWebClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/v1/current")
@@ -86,8 +90,9 @@ public WeatherResponse getWeather(Float lat, Float lon,WeatherRequest request) {
                         .queryParam("lang", lang)
                         .build())
                 .retrieve()
-                .bodyToMono(Current.class)
+                .bodyToMono(WeatherResponse.class)
                 .block();
+      return response;
     }
 
     public Hourly getHourlyWeather(double lat, double lon, int days, boolean ai, String units) {

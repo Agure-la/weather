@@ -30,7 +30,7 @@ public class WeatherController {
     }
 
     @PostMapping("/current")
-    public ResponseEntity<Current> getCurrent(@Valid @RequestBody CurrentWeatherRequest request) {
+    public ResponseEntity<WeatherResponse> getCurrent(@Valid @RequestBody CurrentWeatherRequest request) {
         return ResponseEntity.ok(weatherService.getCurrentWeather(request));
     }
 
