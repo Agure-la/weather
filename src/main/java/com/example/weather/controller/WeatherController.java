@@ -35,7 +35,7 @@ public class WeatherController {
     }
 
     @PostMapping("/hourly")
-    public ResponseEntity<Hourly> hourly(@Valid @RequestBody WeatherRequest request) {
+    public ResponseEntity<WeatherResponse> hourly(@Valid @RequestBody WeatherRequest request) {
         return ResponseEntity.ok(weatherService.getHourlyWeather(request));
     }
 

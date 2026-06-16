@@ -63,7 +63,7 @@ public class WeatherService {
         return locationRepository.findByCityIgnoreCase(city).orElseThrow(() -> new RuntimeException("City not found: " + city));
     }
 
-    public Hourly getHourlyWeather(WeatherRequest request) {
+    public WeatherResponse getHourlyWeather(WeatherRequest request) {
 
         Location location = getLocation(request.getCity());
         int days = request.getDays() != null ? request.getDays() : 7;

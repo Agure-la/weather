@@ -95,7 +95,7 @@ public WeatherResponse getWeather(Float lat, Float lon,WeatherRequest request) {
       return response;
     }
 
-    public Hourly getHourlyWeather(double lat, double lon, int days, boolean ai, String units) {
+    public WeatherResponse getHourlyWeather(double lat, double lon, int days, boolean ai, String units) {
         return weatherWebClient
                 .get()
                 .uri(uri -> uri
@@ -107,7 +107,7 @@ public WeatherResponse getWeather(Float lat, Float lon,WeatherRequest request) {
                         .queryParam("units", units)
                         .build())
                 .retrieve()
-                .bodyToMono(Hourly.class)
+                .bodyToMono(WeatherResponse.class)
                 .block();
     }
 
